@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  build-and-deploy:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,10 +28,14 @@ jobs:
       - name: Run ESLint + Prettier
         run: npx eslint . --ext .js,.jsx,.ts,.tsx --max-warnings=0
 
-      - name: Run build
+      - name: Run Unit Tests (Vitest)
+        run: npm test -- --run
+
+      - name: Build project
         run: npm run build
 
       - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
