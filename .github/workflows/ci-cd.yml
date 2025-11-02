@@ -23,7 +23,10 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Run ESLint + Prettier
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx --max-warnings=0
 
       - name: Run build
         run: npm run build
